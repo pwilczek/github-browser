@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 // Do not need it, yet.
-public class BrowserApplicationTests {
+public class BrowserAppTests {
 
 //	@Test
 	public void contextLoads() {
