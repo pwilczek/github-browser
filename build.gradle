@@ -37,6 +37,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
+    compile group: 'com.netflix.feign', name: 'feign-core', version: '8.18.0'
 }
 
 dependencyManagement {

@@ -8,7 +8,7 @@ public abstract class BrowserAppContractBase {
 
     @Before
     public void setUp() {
-        RestAssuredMockMvc.standaloneSetup(new BrowserAppController());
+        RestAssuredMockMvc.standaloneSetup(new BrowserAppController(null));
     }
 
 }
