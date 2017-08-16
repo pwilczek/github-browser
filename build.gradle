@@ -7,6 +7,7 @@ buildscript {
 	repositories {
 		mavenCentral()
 	}
+
 	dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudVersion}")
@@ -23,9 +24,13 @@ repositories {
 	mavenCentral()
 }
 
-
 ext {
 	springCloudVersion = 'Dalston.SR2'
+}
+
+contracts {
+    baseClassForTests = 'name.wilu.a.github.BrowserAppContractBase'
+    basePackageForTests = 'name.wilu.a.github.contract.tests'
 }
 
 dependencies {

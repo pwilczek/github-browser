@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GitHubBrowserApplication {
+public class BrowserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GitHubBrowserApplication.class, args);
+		SpringApplication.run(BrowserApplication.class, args);
 	}
 }
