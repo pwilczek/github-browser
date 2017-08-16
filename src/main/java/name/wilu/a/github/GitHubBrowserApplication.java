@@ -1,12 +1,12 @@
-package name.wilu.a.github.githubbrowser;
+package name.wilu.a.github;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GithubBrowserApplication {
+public class GitHubBrowserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GithubBrowserApplication.class, args);
+		SpringApplication.run(GitHubBrowserApplication.class, args);
 	}
 }
