@@ -1,24 +1,23 @@
 package contracts
 
 org.springframework.cloud.contract.spec.Contract.make {
-    request { // (1)
-        method 'PUT' // (2)
-        url '/fraudcheck' // (3)
-        body([ // (4)
-               "client.id": $(regex('[0-9]{10}')),
-               loanAmount: 99999
-        ])
-        headers { // (5)
-            contentType('application/json')
-        }
+    request {
+        method 'GET'
+        url $(
+                consumer(regex('/repositories/[a-zA-Z0-9]+/[a-zA-Z0-9]+')),
+                producer('/repositories/pw/githubbrowser')
+        )
     }
-    response { // (6)
-        status 200 // (7)
-        body([ // (8)
-               fraudCheckStatus: "FRAUD",
-               "rejection.reason": "Amount too high"
+    response {
+        status 200
+        body([
+                'fullName'   : 'GitHub Browser',
+                'description': 'With this app you can browse repos',
+                'cloneUrl'   : 'https://github.com/pw/githubbrowser.git',
+                'stars'      : 42,
+                'createdAt'  : '2017-08-16'
         ])
-        headers { // (9)
+        headers {
             contentType('application/json')
         }
     }
