@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# building from source
+./gradlew clean build
+
+# rebuild image
+docker build -t wilu/github-browser .
+
+# stop containers
+if [ "$(docker ps -q -f ancestor=wilu/github-browser)" ]
+then
+  docker stop $(docker ps -q -f ancestor=wilu/github-browser)
+else
+  echo Nothing is running
+fi
+
+# remove containers
+if [ "$(docker ps -a -q -f ancestor=wilu/github-browser)" ]
+then
+  docker rm $(docker ps -a -q -f ancestor=wilu/github-browser)
+else
+  echo Nothing to remove
+fi
+
+# run again
+docker run -d -p 8080:8080 --name ghb wilu/github-browser
