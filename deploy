@@ -3,9 +3,6 @@
 # building from source
 ./gradlew clean build
 
-# rebuild image
-docker build -t wilu/github-browser .
-
 # stop containers
 if [ "$(docker ps -q -f ancestor=wilu/github-browser)" ]
 then
@@ -21,6 +18,10 @@ then
 else
   echo Nothing to remove
 fi
+
+# rebuild image
+docker build -t wilu/github-browser .
+
 
 # run again
 docker run -d -p 8080:8080 --name ghb wilu/github-browser

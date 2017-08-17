@@ -1,0 +1,4 @@
+#!/bin/bash
+echo GET http://localhost:8080/repositories/pwilczek/github-browser | \
+    vegeta -cpus 2 attack -duration=2s -rate=20 | \
+    vegeta report

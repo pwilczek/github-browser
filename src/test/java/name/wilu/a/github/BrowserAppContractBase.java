@@ -7,7 +7,8 @@ public abstract class BrowserAppContractBase {
 
     @Before
     public void setUp() {
-        RestAssuredMockMvc.standaloneSetup(new BrowserAppController(new GitHubExplorer().url("https://api.github.com")));
+        RestAssuredMockMvc.standaloneSetup(
+                new BrowserAppController(new GitHubExplorer().url("https://api.github.com"))
+        );
     }
-
 }
