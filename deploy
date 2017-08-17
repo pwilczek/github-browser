@@ -11,7 +11,7 @@ if [ "$(docker ps -q -f ancestor=wilu/github-browser)" ]
 then
   docker stop $(docker ps -q -f ancestor=wilu/github-browser)
 else
-  echo Nothing is running
+  echo Nothing to stop
 fi
 
 # remove containers
