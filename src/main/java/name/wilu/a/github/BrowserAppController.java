@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.concurrent.TimeoutException;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Controller
@@ -27,8 +30,13 @@ public class BrowserAppController {
     @ControllerAdvice
     private static class Handler {
         @ExceptionHandler(FeignException.class)
-        protected ResponseEntity<?> feignFailures(FeignException e) {
+        private ResponseEntity<?> feignFailures(FeignException e) {
             return ResponseEntity.status(e.status()).build(); // some extra msg might be useful
+        }
+
+        @ExceptionHandler(TimeoutException.class)
+        private ResponseEntity<?> timeouts(TimeoutException e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body("Timeout calling external resource!");
         }
     }
 }

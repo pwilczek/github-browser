@@ -3,22 +3,28 @@ package name.wilu.a.github;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import feign.Feign;
 import feign.Param;
+import feign.Request.Options;
 import feign.RequestLine;
 import feign.gson.GsonDecoder;
+import feign.hystrix.HystrixFeign;
 import name.wilu.a.github.GitHubExplorer.RepoBrowser.Repository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Service class GitHubExplorer {
+@Service
+class GitHubExplorer {
 
     private @Value("${github.api}") String url;
+    private @Value("${github.connTimeout}") int connTimeout = 3000;
+    private @Value("${github.readTimeout}") int readTimeout = 6000;
+
 
     Repository repoDetails(String owner, String repository) {
-        return Feign.builder()
+        return HystrixFeign.builder()
+                .options(new Options(connTimeout, readTimeout))
                 .decoder(new GsonDecoder())
                 .target(RepoBrowser.class, url)
                 .details(owner, repository);

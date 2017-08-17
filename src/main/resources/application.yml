@@ -1,2 +1,4 @@
 github:
   api: 'https://api.github.com'
+  connTimeout: 3000
+  readTimeout: 6000

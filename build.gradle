@@ -35,6 +35,7 @@ contracts {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'com.netflix.feign', name: 'feign-hystrix', version: '8.18.0'
     compile group: 'com.netflix.feign', name: 'feign-gson', version: '8.18.0'
     runtime group: 'com.netflix.feign', name: 'feign-core', version: '8.18.0'
     testCompile('org.springframework.boot:spring-boot-starter-test')
