@@ -1,17 +1,17 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.6.RELEASE'
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
         springCloudVersion = '1.1.2.RELEASE'
 
-	}
-	repositories {
-		mavenCentral()
-	}
+    }
+    repositories {
+        mavenCentral()
+    }
 
-	dependencies {
+    dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.springframework.cloud:spring-cloud-contract-gradle-plugin:${springCloudVersion}")
-	}
+    }
 }
 
 apply plugin: 'spring-cloud-contract'
@@ -21,11 +21,11 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	springCloudVersion = 'Dalston.SR2'
+    springCloudVersion = 'Dalston.SR2'
 }
 
 contracts {
@@ -34,17 +34,20 @@ contracts {
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-web')
-    compile group: 'com.netflix.feign', name: 'feign-slf4j', version: '8.18.0'
-    compile group: 'com.netflix.feign', name: 'feign-hystrix', version: '8.18.0'
-    compile group: 'com.netflix.feign', name: 'feign-gson', version: '8.18.0'
-    runtime group: 'com.netflix.feign', name: 'feign-core', version: '8.18.0'
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.cloud:spring-cloud-starter-hystrix')
+    compile('org.springframework.cloud:spring-cloud-starter-hystrix-dashboard')
+    compile('com.netflix.feign:feign-hystrix:8.18.0')
+    compile('com.netflix.feign:feign-slf4j:8.18.0')
+    compile('com.netflix.feign:feign-gson:8.18.0')
+    runtime('com.netflix.feign:feign-core:8.18.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
+    testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }

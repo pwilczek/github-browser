@@ -3,9 +3,9 @@ package name.wilu.a.github;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import feign.Logger;
 import feign.Param;
-import feign.Request.Options;
 import feign.RequestLine;
 import feign.gson.GsonDecoder;
 import feign.hystrix.HystrixFeign;
@@ -20,13 +20,9 @@ import java.util.Date;
 class GitHubExplorer {
 
     private @Value("${github.api}") String url;
-    private @Value("${github.connTimeout}") int connTimeout = 3000;
-    private @Value("${github.readTimeout}") int readTimeout = 6000;
-
 
     Repository repoDetails(String owner, String repository) {
         return HystrixFeign.builder()
-                .options(new Options(connTimeout, readTimeout))
                 .decoder(new GsonDecoder())
                 .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.BASIC)
@@ -36,6 +32,7 @@ class GitHubExplorer {
 
     interface RepoBrowser {
         //
+        @HystrixCommand
         @RequestLine("GET /repos/{owner}/{repo}")
         Repository details(@Param("owner") String owner, @Param("repo") String repo);
         //
