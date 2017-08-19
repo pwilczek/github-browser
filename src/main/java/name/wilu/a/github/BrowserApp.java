@@ -13,5 +13,4 @@ public class BrowserApp {
     public static void main(String[] args) {
         SpringApplication.run(BrowserApp.class, args);
     }
-
 }

@@ -37,7 +37,6 @@ class GitHubExplorer {
         return this;
     }
 
-
     GitHubExplorer provider(ClientProvider provider) {
         this.provider = provider;
         return this;
