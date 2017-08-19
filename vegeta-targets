@@ -1,0 +1,14 @@
+GET http://localhost:8080/repositories/tsenart/vegeta
+
+
+GET http://localhost:8080/repositories/Netflix/Hystrix
+
+
+GET http://localhost:8080/repositories/spring-cloud/spring-cloud-contract
+
+
+GET http://localhost:8080/repositories/spring-projects/spring-boot
+
+
+GET http://localhost:8080/repositories/spring-projects/spring-boot
+

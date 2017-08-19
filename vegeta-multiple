@@ -1,0 +1,4 @@
+#!/bin/bash
+cat vegeta-targets | \
+    vegeta -cpus 2 attack -rate=20 -duration=1s | \
+    vegeta report

@@ -1,0 +1,4 @@
+#!/bin/bash
+echo GET http://localhost:8080/repositories/tsenart/vegeta | \
+    vegeta -cpus 2 attack -duration=1s -rate=20 | \
+    vegeta report
