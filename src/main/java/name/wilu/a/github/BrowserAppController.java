@@ -52,8 +52,9 @@ public class BrowserAppController {
 
     @JsonInclude(NON_NULL)
     static class Reason {
-        public String msg;
-        public String details;
+        public final String hystrix = "http://localhost:8080/hystrix";
+        public final String msg;
+        public final String details;
 
         Reason(String msg, String details) {
             this.msg = msg;
