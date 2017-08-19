@@ -2,4 +2,5 @@
 
 # building from source
 ./gradlew clean build
+# run locally
 java -jar ./build/libs/github-browser-0.0.1-SNAPSHOT.jar
