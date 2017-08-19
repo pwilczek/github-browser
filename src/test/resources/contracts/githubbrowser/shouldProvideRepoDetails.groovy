@@ -14,7 +14,7 @@ org.springframework.cloud.contract.spec.Contract.make {
                 'fullName'   : 'spring-cloud/spring-cloud-contract',
                 'description': 'Support for Consumer Driven Contracts in Spring',
                 'cloneUrl'   : 'https://github.com/spring-cloud/spring-cloud-contract.git',
-                'stars'      : 150,
+                'stars'      : anyNumber(),
                 'createdAt'  : '2016-06-12'
         ])
         headers {
