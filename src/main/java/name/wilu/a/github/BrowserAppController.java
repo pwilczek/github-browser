@@ -2,6 +2,8 @@ package name.wilu.a.github;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,6 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Controller
 public class BrowserAppController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrowserAppController.class);
     private final GitHubExplorer explorer;
 
     public BrowserAppController(GitHubExplorer explorer) {
@@ -38,18 +41,21 @@ public class BrowserAppController {
 
         @ExceptionHandler(FeignException.class)
         ResponseEntity<?> feignFailures(FeignException e) {
+            LOGGER.warn("Failed request!", e);
             return ResponseEntity.status(e.status()).body(
                     new Reason(FEIGN_ERROR, e.getMessage()));
         }
 
         @ExceptionHandler(TimeoutException.class)
         ResponseEntity<?> timeouts(TimeoutException e) {
+            LOGGER.warn("Failed request!", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body(new Reason(TIMEOUT_ERROR, e.getMessage()));
         }
 
         @ExceptionHandler(Exception.class)
         ResponseEntity<?> other(Exception e) {
+            LOGGER.warn("Failed request!", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(
                     new Reason(UNEXPECTED_ERROR, e.getMessage()));
         }

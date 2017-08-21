@@ -1,0 +1,6 @@
+github:
+  api: 'https://api.github.com'
+
+logging:
+  level:
+    ROOT: INFO
