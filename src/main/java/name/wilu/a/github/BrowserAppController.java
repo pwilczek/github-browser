@@ -31,22 +31,27 @@ public class BrowserAppController {
 
     @ControllerAdvice
     static class Handler {
+        //
+        static String FEIGN_ERROR = "Error calling external resource!";
+        static String TIMEOUT_ERROR = "Timeout calling external resource!";
+        static String UNEXPECTED_ERROR = "Unexpected error";
+
         @ExceptionHandler(FeignException.class)
         ResponseEntity<?> feignFailures(FeignException e) {
             return ResponseEntity.status(e.status()).body(
-                    new Reason("Error calling external resource!", e.getMessage()));
+                    new Reason(FEIGN_ERROR, e.getMessage()));
         }
 
         @ExceptionHandler(TimeoutException.class)
         ResponseEntity<?> timeouts(TimeoutException e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                    .body(new Reason("Timeout calling external resource!", e.getMessage()));
+                    .body(new Reason(TIMEOUT_ERROR, e.getMessage()));
         }
 
         @ExceptionHandler(Exception.class)
         ResponseEntity<?> other(Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(
-                    new Reason("Unexpected error", e.getMessage()));
+                    new Reason(UNEXPECTED_ERROR, e.getMessage()));
         }
     }
 
