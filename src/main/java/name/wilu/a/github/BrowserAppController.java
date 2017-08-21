@@ -1,6 +1,7 @@
 package name.wilu.a.github;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class BrowserAppController {
         //
         static String FEIGN_ERROR = "Error calling external resource!";
         static String TIMEOUT_ERROR = "Timeout calling external resource!";
-        static String UNEXPECTED_ERROR = "Unexpected error";
+        static String UNEXPECTED_ERROR = "Unexpected error!";
 
         @ExceptionHandler(FeignException.class)
         ResponseEntity<?> feignFailures(FeignException e) {
@@ -53,8 +54,15 @@ public class BrowserAppController {
                     .body(new Reason(TIMEOUT_ERROR, e.getMessage()));
         }
 
+        @ExceptionHandler(HystrixRuntimeException.class)
+        ResponseEntity<?> hystrixFailures(HystrixRuntimeException e) {
+            if (e.getCause() instanceof FeignException) return feignFailures((FeignException) e.getCause());
+            if(e.getCause() instanceof TimeoutException) return timeouts((TimeoutException)e.getCause());
+            return others(e);
+        }
+
         @ExceptionHandler(Exception.class)
-        ResponseEntity<?> other(Exception e) {
+        ResponseEntity<?> others(Exception e) {
             LOGGER.warn("Failed request!", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(
                     new Reason(UNEXPECTED_ERROR, e.getMessage()));

@@ -32,6 +32,5 @@ public class BrowserApp {
                     .paths(PathSelectors.any())
                     .build().enableUrlTemplating(true);
         }
-
     }
 }

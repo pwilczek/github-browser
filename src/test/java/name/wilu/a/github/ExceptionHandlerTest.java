@@ -1,5 +1,6 @@
 package name.wilu.a.github;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import feign.Response;
 import name.wilu.a.github.BrowserAppController.Handler;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeoutException;
 
+import static com.netflix.hystrix.exception.HystrixRuntimeException.FailureType.BAD_REQUEST_EXCEPTION;
+import static com.netflix.hystrix.exception.HystrixRuntimeException.FailureType.TIMEOUT;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang.StringUtils.EMPTY;
@@ -46,8 +49,8 @@ public class ExceptionHandlerTest {
 
     @Test
     public void shouldHandleFeignFailures() throws Exception {
-        FeignException exc = FeignException.errorStatus("api", response(509));
-        when(controller.call()).thenThrow(exc);
+        FeignException fex = FeignException.errorStatus("api", response(509));
+        when(controller.call()).thenThrow(fex);
         mockMvc.perform(get("/api"))
                 .andExpect(status().isBandwidthLimitExceeded())
                 .andExpect(jsonPath("$.msg").value(Handler.FEIGN_ERROR));
@@ -63,6 +66,29 @@ public class ExceptionHandlerTest {
                 .andExpect(jsonPath("$.msg").value(Handler.TIMEOUT_ERROR))
                 .andExpect(jsonPath("$.details").value(details));
     }
+
+    @Test
+    public void shouldHandleHystrixTimeout() throws Exception {
+        String msg = "cause-msg";
+        HystrixRuntimeException hex = new HystrixRuntimeException(TIMEOUT, null, EMPTY, new TimeoutException(msg), null);
+        when(controller.call()).thenThrow(hex);
+        mockMvc.perform(get("/api"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.msg").value(Handler.TIMEOUT_ERROR))
+                .andExpect(jsonPath("$.details").value(msg));
+
+    }
+
+    @Test
+    public void shouldHandleHystrixFeignFailure() throws Exception {
+        FeignException fex = FeignException.errorStatus("api", response(400));
+        HystrixRuntimeException hex = new HystrixRuntimeException(BAD_REQUEST_EXCEPTION, null, EMPTY, fex, null);
+        when(controller.call()).thenThrow(hex);
+        mockMvc.perform(get("/api"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.msg").value(Handler.FEIGN_ERROR));
+    }
+
 
     @Test
     public void shouldHandleOthers() throws Exception {
